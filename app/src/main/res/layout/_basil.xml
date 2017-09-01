@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgBasil"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/basil"
+        />
+
+    <EditText
+        android:id="@+id/txtBasil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/imgBasil"
+        android:text="Common name: \nBasil" />
+
+    <EditText
+        android:id="@+id/charBasil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtBasil"
+        android:maxLines="8"
+        android:gravity="center"
+        android:text="Characteristics: \nBasil can be cooked or eat fresh. Its flowers white, purple, or red colored tier-shaped."
+        />
+
+    <EditText
+        android:id="@+id/infoBasil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/charBasil"
+        android:gravity="center"
+        android:text="Estimate harvest time: \nSprout: 4-5 days\nHarvest: 50-70 days after transplanted" />
+
+
+    <Button
+        android:id="@+id/bntCrop3"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="Plant"
+        />
+
+</RelativeLayout>

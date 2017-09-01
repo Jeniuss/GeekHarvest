@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "50299440346",
+    "firebase_url": "https://geekharvest-b3a81.firebaseio.com",
+    "project_id": "geekharvest-b3a81",
+    "storage_bucket": "geekharvest-b3a81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50299440346:android:11b18eedf0cd311a",
+        "android_client_info": {
+          "package_name": "com.example.jee.geekharvest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50299440346-0k2rli7b0uogrkikr155cbtut0tlnp8p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jee.geekharvest",
+            "certificate_hash": "00cc0421aa4b37ba3bfddd992e9cdf177d3637d9"
+          }
+        },
+        {
+          "client_id": "50299440346-skint0u0atnc2ul8jm30t1fpr4lkubah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZelXuMpYiVZ_1D3oUBuLPktV1yqkIg9g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50299440346-skint0u0atnc2ul8jm30t1fpr4lkubah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

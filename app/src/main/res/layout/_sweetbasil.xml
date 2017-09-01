@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgSweetBasil"
+        android:layout_width="389dp"
+        android:layout_height="196dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/thai_basil_with_flowers"
+         />
+
+    <EditText
+        android:id="@+id/txtSweetBasil"
+        android:layout_below="@id/imgSweetBasil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Common name: \nSweet basil" />
+
+    <EditText
+        android:id="@+id/charSweetBasil"
+        android:layout_below="@id/txtSweetBasil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="6"
+        android:gravity="center"
+        android:text="Characteristics: \nIts trunk is somewhat hard and hairy. Sweet basil is famous in many dishes. " />
+
+    <EditText
+        android:id="@+id/infoSweetBasil"
+        android:layout_below="@id/charSweetBasil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Estimate harvest time: \nSprout: 4-5 days\nHarvest: 50-70 days after transplanted" />
+
+    <Button
+        android:id="@+id/bntCrop11"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="Plant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"/>
+
+
+</RelativeLayout>

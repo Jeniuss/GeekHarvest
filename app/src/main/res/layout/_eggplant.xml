@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imgEggPlant"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/eggplant" />
+
+    <EditText
+        android:id="@+id/txtEggPlant"
+        android:layout_below="@id/imgEggPlant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Common name: \nEggplant" />
+
+    <EditText
+        android:id="@+id/charEggPlant"
+        android:layout_below="@id/txtEggPlant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="8"
+        android:gravity="center"
+        android:text="Characteristics: \nEggplant is an herbaceous plant with around 100-150 cm. height shrubs. It has cone-shaped violet flower ." />
+
+    <EditText
+        android:id="@+id/infoEggPlant"
+        android:layout_below="@id/charEggPlant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Estimate harvest time: \nSprout: 7-10 days\nHarvest: 50-60 days after transplanted" />
+
+
+    <Button
+        android:id="@+id/bntCrop5"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="Plant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"/>
+
+</RelativeLayout>

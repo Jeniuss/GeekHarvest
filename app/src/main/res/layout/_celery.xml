@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgCelery"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/celery"
+        />
+
+    <EditText
+        android:id="@+id/txtCelery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/imgCelery"
+        android:text="Common name: \nCelery" />
+
+    <EditText
+        android:id="@+id/charCelery"
+        android:layout_below="@id/txtCelery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="8"
+        android:gravity="center"
+        android:text="Characteristics: \nIt can be eat fresh both leaves and trunk or use to cook together with meat to reduce meat’s fishy smell." />
+
+    <EditText
+        android:id="@+id/infoCelery"
+        android:layout_below="@id/charCelery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Estimate harvest time: \nSprout: 4-7 days\nHarvest: 60-80 days after transplanted" />
+
+
+    <Button
+        android:id="@+id/bntCrop4"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="Plant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"/>
+
+</RelativeLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgLemon"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/lemonbasil"
+        />
+
+    <EditText
+        android:id="@+id/txtLemon"
+        android:layout_below="@id/imgLemon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Common name: \nLemon basil" />
+
+    <EditText
+        android:id="@+id/charLemon"
+        android:layout_below="@id/txtLemon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="10"
+        android:gravity="center"
+        android:text="Characteristics: \nIts small black seeds are covered by polyuronide tissue can be found inside the flower, which we known as basil seeds." />
+
+    <EditText
+        android:id="@+id/infoLemon"
+        android:layout_below="@id/charLemon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Estimate harvest time: \nSprout: 4-5 days\nHarvest: 50-70 days after transplanted" />
+
+    <Button
+        android:id="@+id/bntCrop7"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="Plant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"/>
+
+</RelativeLayout>

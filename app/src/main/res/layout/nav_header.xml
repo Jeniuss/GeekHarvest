@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/colortab"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        app:srcCompat="@drawable/geekharvestlogo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/txtNamePlant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="casual"
+        android:text=""
+        android:textColor="#ffffff"
+        android:textSize="@dimen/h4"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/logo"
+        android:layout_alignStart="@+id/txtEmail"
+        android:layout_marginBottom="14dp" />
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="14dp"
+        android:fontFamily="casual"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/h4"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/logo"
+        android:layout_toEndOf="@+id/logo" />
+
+
+</RelativeLayout>

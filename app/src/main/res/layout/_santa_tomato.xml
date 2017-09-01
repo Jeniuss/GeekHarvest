@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgTomato"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/native_tomato_small_2"
+        />
+
+   <EditText
+       android:id="@+id/txtTomato"
+       android:layout_below="@id/imgTomato"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:gravity="center"
+       android:text="Common name: \nSanta tomato" />
+
+    <EditText
+        android:id="@+id/charTomato"
+        android:layout_below="@id/txtTomato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="8"
+        android:gravity="center"
+        android:text="Characteristics: \nIt has hairy trunk with maximum root length of 1 m. Some species will grow like ivy." />
+
+    <EditText
+        android:id="@+id/infoTomato"
+        android:layout_below="@id/charTomato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Estimate harvest time: \nSprout: 6-8 days\nHarvest: 75-90 days after transplanted" />
+
+    <Button
+        android:id="@+id/bntCrop9"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="Plant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"/>
+
+</RelativeLayout>

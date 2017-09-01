@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.jee.geekharvest">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    import android.support.v7.app.ActionBar;
+
+    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <application
+        android:allowBackup="true"
+        android:enabled="true"
+        android:exported="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="GeekHarvest"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".Account">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+        <activity android:name=".ChilliInfo" />
+        <activity android:name=".CorianderInfo" />
+        <activity android:name=".SunflowerInfo" />
+        <activity android:name=".BasilInfo" />
+        <activity android:name=".CeleryInfo" />
+        <activity android:name=".EggPlantInfo" />
+        <activity android:name=".SpinachInfo" />
+        <activity android:name=".ThaiEggPlantInfo" />
+        <activity android:name=".SantaTomatoInfo" />
+        <activity android:name=".KaleInfo" />
+        <activity android:name=".RadishInfo" />
+        <activity android:name=".LemonBasilInfo" />
+        <activity android:name=".SweetBasilInfo" />
+        <activity android:name=".Select" />
+        <activity android:name=".SignIn" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".NameOfYourPlant" />
+        <activity android:name=".Setting" />
+        <activity android:name=".Plant" />
+        <activity android:name=".Test" />
+        <activity android:name=".ConnectDB" />
+        <activity android:name=".NavHeader" />
+
+        <receiver android:name=".NotiPhase" />
+        <receiver android:name=".NotiMoisture" />
+        <receiver android:name=".NotiNewPlant" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".WelcomeActivity"
+            android:label="@string/title_activity_welcome"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!--<activity-->
+            <!--android:name=".NavigatorDrawer"-->
+            <!--android:label="@string/title_activity_navigator_drawer"-->
+            <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
+    </application>
+
+</manifest>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/imgChilli"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/chilli" />
+
+    <EditText
+        android:id="@+id/txtChilli"
+        android:layout_below="@id/imgChilli"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Common name: \nChili" />
+
+    <EditText
+        android:id="@+id/charChilli"
+        android:layout_below="@id/txtChilli"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="8"
+        android:gravity="center"
+        android:text="Characteristics: \nIts product will be green while being raw, and change to red when fully matured. " />
+
+    <EditText
+        android:id="@+id/infoChilli"
+        android:layout_below="@id/charChilli"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Estimate harvest time: \nSprout: 7-10 days\nHarvest: 60-90 days after transplanted" />
+
+    <Button
+        android:id="@+id/bntCrop1"
+        android:layout_width="109dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:text="Plant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450dp"/>
+
+</RelativeLayout>
