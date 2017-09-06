@@ -32,7 +32,7 @@ public class ChilliInfo extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     public String dateOfPlant, currentDateString, currentTimeString, plant_id;
-    private String plantID, setID;
+    private String plantID, setID, nameOfPlant;
     private int num = 1;
     private String[] blank, phase;
     private String response = null;
@@ -69,6 +69,23 @@ public class ChilliInfo extends AppCompatActivity {
                             mDatabase.child("plant id").setValue(setID);
                         }else{
                             Log.d("Testing ", plantID);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                mDatabase.child("nameOfPlant").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        nameOfPlant = dataSnapshot.getValue().toString();
+
+                        if(nameOfPlant.equals("")){
+                            mDatabase.child("nameOfPlant").setValue("Chilli");
+                        }else{
+                            Log.d("Testing ", nameOfPlant);
                         }
                     }
                     @Override
@@ -115,7 +132,7 @@ public class ChilliInfo extends AppCompatActivity {
                     }
                 });
 
-                Intent go = new Intent(getApplicationContext(), Plant.class);
+                Intent go = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(go);
             }
         });

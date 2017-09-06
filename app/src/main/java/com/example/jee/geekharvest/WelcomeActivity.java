@@ -138,11 +138,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 plantID = dataSnapshot.getValue().toString();
                 Log.d("Testing ", plantID);
                 if(plantID.equals("")){
-                    startActivity(new Intent(getApplicationContext(), NameOfYourPlant.class));
+                    startActivity(new Intent(getApplicationContext(), Select.class));
                     finish();
                     Log.d("Testing ", "I'm here1");
                 }else{
-                    startActivity(new Intent(getApplicationContext(), Plant.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     Log.d("Testing ", "I'm here2");
                     finish();
                 }

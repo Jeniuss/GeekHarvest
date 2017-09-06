@@ -66,11 +66,13 @@ public class NotiPhase extends BroadcastReceiver {
 
     public void comparePhase(final Context context){
         if(numPhase == 1){
-            text = "You are phase 1";
+            text = "Sprouting";
         }else if(numPhase == 2){
-            text = "You are phase 2";
+            text = "Growing";
         }else if(numPhase == 3){
-            text = "You are phase 3";
+            text = "Harvest";
+        }else if(numPhase == 4) {
+            text = "Complete";
         }else{
             text = "In Process";
         }
@@ -200,24 +202,29 @@ public class NotiPhase extends BroadcastReceiver {
 
     public void noti(){
         if(fd == Integer.parseInt(phase[0])){
-            text = "You are phase 1";
+            text = "Sprouting";
             System.out.println(text);
             numPhase = 1;
             System.out.println(numPhase);
         }else if(fd == Integer.parseInt(phase[1])){
-            text = "You are phase 2";
+            text = "Growing";
             System.out.println(text);
             numPhase = 2;
             System.out.println(numPhase);
         }else if(fd == Integer.parseInt(phase[2])){
-            text = "You are phase 3";
+            text = "Harvest";
             System.out.println(text);
             numPhase = 3;
+            System.out.println(numPhase);
+        }else if(fd > Integer.parseInt(phase[2])){
+            text = "Complete";
+            System.out.println(text);
+            numPhase = 4;
             System.out.println(numPhase);
         }else {
             text = "In Process";
             System.out.println(text);
-            numPhase = 4;
+            numPhase = 5;
             System.out.println(numPhase);
         }
     }

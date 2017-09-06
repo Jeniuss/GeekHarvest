@@ -31,14 +31,14 @@ public class ThaiEggPlantInfo extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     public String dateOfPlant, currentDateString, currentTimeString, plant_id;
-    private String plantID, setID;
+    private String plantID, setID, nameOfPlant;
     private String[] blank, phase;
     private String response = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout._basil);
+        setContentView(R.layout._thai_eggplant);
 
         Date date = new Date();
         mAuth = FirebaseAuth.getInstance(); //importance call
@@ -63,10 +63,27 @@ public class ThaiEggPlantInfo extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         plantID = dataSnapshot.getValue().toString();
 
-                        if(plantID.equals("")){
+                        if(nameOfPlant.equals("")){
                             mDatabase.child("plant id").setValue(setID);
                         }else{
                             Log.d("Testing ", plantID);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                mDatabase.child("nameOfPlant").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        nameOfPlant = dataSnapshot.getValue().toString();
+
+                        if(plantID.equals("")){
+                            mDatabase.child("nameOfPlant").setValue("ThaiEgg");
+                        }else{
+                            Log.d("Testing ", nameOfPlant);
                         }
                     }
                     @Override
@@ -113,7 +130,7 @@ public class ThaiEggPlantInfo extends AppCompatActivity {
                     }
                 });
 
-                Intent go = new Intent(getApplicationContext(), Plant.class);
+                Intent go = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(go);
             }
         });

@@ -31,7 +31,7 @@ public class CorianderInfo extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     public String dateOfPlant, currentDateString, currentTimeString;
-    private String plantID, setID;
+    private String plantID, setID, nameOfPlant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +62,27 @@ public class CorianderInfo extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         plantID = dataSnapshot.getValue().toString();
 
-                        if(plantID.equals("")){
+                        if(nameOfPlant.equals("")){
                             mDatabase.child("plant id").setValue(setID);
                         }else{
                             Log.d("Testing ", plantID);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                mDatabase.child("nameOfPlant").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        nameOfPlant = dataSnapshot.getValue().toString();
+
+                        if(plantID.equals("")){
+                            mDatabase.child("nameOfPlant").setValue("Coriander");
+                        }else{
+                            Log.d("Testing ", nameOfPlant);
                         }
                     }
                     @Override
@@ -97,7 +114,7 @@ public class CorianderInfo extends AppCompatActivity {
 
 
 
-                Intent go = new Intent(getApplicationContext(), Plant.class);
+                Intent go = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(go);
             }
 

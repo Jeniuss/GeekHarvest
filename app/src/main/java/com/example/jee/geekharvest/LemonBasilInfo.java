@@ -31,14 +31,14 @@ public class LemonBasilInfo extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     public String dateOfPlant, currentDateString, currentTimeString, plant_id;
-    private String plantID, setID;
+    private String plantID, setID, nameOfPlant;
     private String[] blank, phase;
     private String response = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout._basil);
+        setContentView(R.layout._lemon_basil);
 
         Date date = new Date();
         mAuth = FirebaseAuth.getInstance(); //importance call
@@ -67,6 +67,23 @@ public class LemonBasilInfo extends AppCompatActivity {
                             mDatabase.child("plant id").setValue(setID);
                         }else{
                             Log.d("Testing ", plantID);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                mDatabase.child("nameOfPlant").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        nameOfPlant = dataSnapshot.getValue().toString();
+
+                        if(nameOfPlant.equals("")){
+                            mDatabase.child("nameOfPlant").setValue("LemonBasil");
+                        }else{
+                            Log.d("Testing ", nameOfPlant);
                         }
                     }
                     @Override
@@ -113,7 +130,7 @@ public class LemonBasilInfo extends AppCompatActivity {
                     }
                 });
 
-                Intent go = new Intent(getApplicationContext(), Plant.class);
+                Intent go = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(go);
             }
         });

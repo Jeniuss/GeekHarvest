@@ -48,7 +48,6 @@
         <activity android:name=".SignUp" />
         <activity android:name=".NameOfYourPlant" />
         <activity android:name=".Setting" />
-        <activity android:name=".Plant" />
         <activity android:name=".Test" />
         <activity android:name=".ConnectDB" />
         <activity android:name=".NavHeader" />
@@ -65,10 +64,14 @@
             android:name=".WelcomeActivity"
             android:label="@string/title_activity_welcome"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!--<activity-->
-            <!--android:name=".NavigatorDrawer"-->
-            <!--android:label="@string/title_activity_navigator_drawer"-->
-            <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
+        <!-- <activity -->
+        <!-- android:name=".NavigatorDrawer" -->
+        <!-- android:label="@string/title_activity_navigator_drawer" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
