@@ -51,6 +51,7 @@
         <activity android:name=".Test" />
         <activity android:name=".ConnectDB" />
         <activity android:name=".NavHeader" />
+        <activity android:name=".ShowPlantInfo" />
 
         <receiver android:name=".NotiPhase" />
         <receiver android:name=".NotiMoisture" />

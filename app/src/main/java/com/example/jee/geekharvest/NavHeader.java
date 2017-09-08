@@ -1,7 +1,9 @@
 package com.example.jee.geekharvest;
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,12 +22,14 @@ public class NavHeader extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase, plantDB, emailDB;
     private FirebaseUser user;
-    private TextView namePlant, txtEmail;
+    private TextView txtNamePlant, txtEmail;
+    private String nameOfPlant, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nav_header);
+        setContentView(R.layout.nav_header_main);
+
 
         mAuth = FirebaseAuth.getInstance(); //importance call
         String uid = mAuth.getCurrentUser().getUid();
@@ -33,14 +37,19 @@ public class NavHeader extends AppCompatActivity {
         plantDB = FirebaseDatabase.getInstance().getReference().child(uid).child("nameOfPlant");
         emailDB = FirebaseDatabase.getInstance().getReference().child(uid).child("email");
         user = FirebaseAuth.getInstance().getCurrentUser();
-        namePlant = (TextView) findViewById(R.id.txtNamePlant);
+        txtNamePlant = (TextView) findViewById(R.id.txtNamePlant);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
 
-        plantDB.addValueEventListener(new ValueEventListener() {
+        getNamePlant();
+        getEmail();
+
+    }
+    public void getNamePlant(){
+        mDatabase.child("nameOfPlant").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String nameOfPlant = dataSnapshot.getValue().toString();
-                namePlant.setText(nameOfPlant);
+                nameOfPlant = dataSnapshot.getValue().toString();
+                txtNamePlant.setText(nameOfPlant);
             }
 
             @Override
@@ -48,11 +57,13 @@ public class NavHeader extends AppCompatActivity {
 
             }
         });
+    }
 
-        emailDB.addValueEventListener(new ValueEventListener() {
+    public void getEmail(){
+        mDatabase.child("email").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String email = dataSnapshot.getValue().toString();
+                email = dataSnapshot.getValue().toString();
                 txtEmail.setText(email);
             }
 
