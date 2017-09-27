@@ -1,45 +1,41 @@
 package com.example.jee.geekharvest;
 
+
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
-import android.widget.TextView;
-
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import static android.content.Context.ALARM_SERVICE;
+
 
 /**
- * Created by Jee on 5/25/2017 AD.
+ * A simple {@link Fragment} subclass.
  */
+public class SettingFragment extends Fragment {
 
-public class Setting extends AppCompatActivity {
-
-    private FirebaseAuth mAuth;
+    public DatabaseReference mDatabase;
+    public FirebaseAuth mAuth;
+    public FirebaseUser user;
     private Switch sw1,sw2,sw3,sw4,sw5,sw6;
-    private DatabaseReference mDatabase;
     private String soil_status, autoValve;
     SharedPreferences sp;
     private String text;
@@ -48,26 +44,29 @@ public class Setting extends AppCompatActivity {
     private Button reset;
     private String num;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting);
 
+    public SettingFragment() {
+        //Firebase
         mAuth = FirebaseAuth.getInstance(); //importance call
         String uid = mAuth.getCurrentUser().getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference().child(uid);
 
+    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Setting");
         getSoilStatus();
 //        comparePhase();
 
-        sw1 = (Switch) findViewById(R.id.switch1);
-        sw2 = (Switch) findViewById(R.id.switch2);
-        sw3 = (Switch) findViewById(R.id.switch3);
-        sw4 = (Switch) findViewById(R.id.switch4);
-        sw5 = (Switch) findViewById(R.id.switch5);
-        sw6 = (Switch) findViewById(R.id.switch6);
-        reset = (Button) findViewById(R.id.bntReset);
+        sw1 = (Switch) view.findViewById(R.id.switch1);
+        sw2 = (Switch) view.findViewById(R.id.switch2);
+        sw3 = (Switch) view.findViewById(R.id.switch3);
+        sw4 = (Switch) view.findViewById(R.id.switch4);
+        sw5 = (Switch) view.findViewById(R.id.switch5);
+        sw6 = (Switch) view.findViewById(R.id.switch6);
+        reset = (Button) view.findViewById(R.id.bntReset);
 
         mDatabase.child("setting_humidity").addValueEventListener(new ValueEventListener() {
             @Override
@@ -166,45 +165,13 @@ public class Setting extends AppCompatActivity {
         });
 
 
-
-
-//        sw1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(correct){
-//                    if(sw1.isChecked() == true && check2 != num2) {
-//                        System.out.print("2" + num2);
-//                        System.out.print("3" + check2);
-//                        android.app.Notification notification =
-//                                new NotificationCompat.Builder(Setting.this) // this is context
-//                                        .setSmallIcon(R.mipmap.ic_launcher)
-//                                        .setContentTitle("DevAhoy News")
-//                                        .setContentText(soil_status)
-//                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                                        .setAutoCancel(true)
-//                                        .setTicker(getString(R.string.poptext))
-//                                        .build();
-//
-//                        NotificationManager notificationManager =
-//                                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//                        notificationManager.notify(1, notification);
-//                        check2 = num2;
-//                        System.out.print("4" + check2);
-//                    }
-//                    correct = true;
-//                }else{
-//
-//                }
-//            }
-//        });
-
         sw1.setOnClickListener(new View.OnClickListener() { //humidity
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getApplicationContext(), NotiMoisture.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(getActivity().getApplicationContext(), NotiMoisture.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
                 if(sw1.isChecked() == true) {
                     Calendar calendar = Calendar.getInstance();
@@ -212,7 +179,7 @@ public class Setting extends AppCompatActivity {
                     Log.d("Test ", "I'm here 1");
 
                     /* Repeating on every 1 minutes interval */
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),1000 * 60,pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),1000 * 15,pendingIntent);
                 }else{
                     Log.d("Test ", "I'm here 2");
                     alarmManager.cancel(pendingIntent);
@@ -223,14 +190,22 @@ public class Setting extends AppCompatActivity {
 
 
         sw3.setOnClickListener(new View.OnClickListener() { //phaseofPlant
-            Intent intent = new Intent(Setting.this, NotiPhase.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(), NotiPhase.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),101,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
             @Override
             public void onClick(View v) {
                 if (sw3.isChecked() == true) {
+                    Calendar calendar = Calendar.getInstance();
+                    mDatabase.child("setting_phase").setValue("1");
                     Log.d("Test ", "I'm here 1");
-                    sendBroadcast(intent);
+
+                    /* Repeating on every 1 minutes interval */
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),1000 * 15,pendingIntent);
                 }else {
                     Log.d("Test ", "I'm here 2");
+                    alarmManager.cancel(pendingIntent);
+                    mDatabase.child("setting_phase").setValue("0");
                 }
             }
         });
@@ -248,12 +223,12 @@ public class Setting extends AppCompatActivity {
         });
 
         sw5.setOnClickListener(new View.OnClickListener() { //newPlant
-            Intent intent = new Intent(Setting.this, NotiNewPlant.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(), NotiNewPlant.class);
             @Override
             public void onClick(View v) {
                 if (sw5.isChecked() == true) {
                     Log.d("Test ", "I'm here 1");
-                    sendBroadcast(intent);
+                    getActivity().sendBroadcast(intent);
                 }else {
                     Log.d("Test ", "I'm here 2");
                 }
@@ -285,7 +260,13 @@ public class Setting extends AppCompatActivity {
                 mDatabase.child("auto valve").setValue("0");
             }
         });
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        return inflater.inflate(R.layout.fragment_setting, container, false);
     }
 
     public void getSoilStatus(){
@@ -310,52 +291,5 @@ public class Setting extends AppCompatActivity {
 
         });
     }
-
-
-//    public void comparePhase(){
-////        sp = getSharedPreferences("PREF_NAME", Context.MODE_PRIVATE);
-////        numPhase = sp.getInt("numPhase", 0);
-//        Bundle bundle = getIntent().getExtras();
-//        numPhase = bundle.getInt("numPhase");
-//        if(numPhase == 1){
-//            text = "You are phase 1";
-//        }else if(numPhase == 2){
-//            text = "You are phase 2";
-//        }else if(numPhase == 3){
-//            text = "You are phase 3";
-//        }else{
-//            text = "In Process";
-//        }
-//    }
-
-    public void signout(){
-        startActivity(new Intent(getApplicationContext(), Account.class));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        //Inflate the menu; this adds items to the action bar if it is present
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // เก็บค่า id ของปุ่ม action butoon ที่กดเลือก
-        int id = item.getItemId();
-
-        // ตรวจสอบค่า ว่า เป็น id ใด  แล้วเรียกใช้ method ที่เราสร้างขึ้น
-        // ในตัวอย่างนี้ เราจะส่งค่าข้อความเข้าไปใน method
-        switch (id) {
-            case R.id.action_signout:
-                mAuth.signOut();
-                signout();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 
 }

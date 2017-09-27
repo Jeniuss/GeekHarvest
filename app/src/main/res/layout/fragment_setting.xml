@@ -1,0 +1,161 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jee.geekharvest.SettingFragment">
+
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="32dp">
+
+
+        <TextView
+            android:id="@+id/txtNoti"
+            android:layout_marginTop="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Notification"
+            android:textSize="@dimen/h3" />
+
+        <TextView
+            android:id="@+id/txtHumidity"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="25dp"
+            android:layout_below="@id/txtNoti"
+            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Humidity" />
+
+
+        <TextView
+            android:id="@+id/txtLight"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/Poor_Light"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtHumidity" />
+
+        <TextView
+            android:id="@+id/txtPhase"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phase"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtLight"
+            android:layout_marginTop="30dp" />
+
+
+        <TextView
+            android:id="@+id/txtTimeUseAuto"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Using_Auto"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtPhase"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/txtNewPlant"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NewPlant"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtTimeUseAuto"
+            android:layout_marginTop="30dp"/>
+        <TextView
+            android:id="@+id/txtSetting"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Setting"
+            android:textSize="@dimen/h3"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/txtNewPlant"/>
+
+        <TextView
+            android:id="@+id/txtAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:text="@string/Auto"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtSetting" />
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtNoti"
+            android:layout_marginTop="10dp"
+            android:padding="15dp"/>
+
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"/>
+
+        <Switch
+            android:id="@+id/switch3"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/switch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"/>
+
+        <Switch
+            android:id="@+id/switch4"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/switch3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"/>
+
+        <Switch
+            android:id="@+id/switch5"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/switch4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"/>
+
+        <Switch
+            android:id="@+id/switch6"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/switch5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:padding="15dp" />
+
+        <Button
+            android:id="@+id/bntReset"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Reset"
+            android:background="#ffff8800"
+            android:textColor="#ffffff" />
+
+    </RelativeLayout>
+
+
+</FrameLayout>

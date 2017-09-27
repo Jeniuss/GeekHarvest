@@ -54,12 +54,22 @@
         <activity android:name=".ShowPlantInfo" />
 
         <receiver android:name=".NotiPhase" />
-        <receiver android:name=".NotiMoisture" />
-        <receiver android:name=".NotiNewPlant" />
+        <!--<receiver android:name=".NotiMoisture" />-->
+        <!--<receiver android:name=".NotiNewPlant" />-->
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <service android:name=".StarterService" >
+        </service>
+
+        <receiver android:name=".NotiMoisture" >
+            <intent-filter>
+                <action android:name="YouWillNeverKillMe" >
+                </action>
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".WelcomeActivity"

@@ -73,10 +73,14 @@ public class Account extends AppCompatActivity{
                     dataMap.put("email", email);
                     dataMap.put("uid", uid);
                     dataMap.put("soil", 0);
+                    dataMap.put("value", 0);
                     dataMap.put("soil_status", "");
+                    dataMap.put("temp_soil_status", "");
                     dataMap.put("valve", "0");
                     dataMap.put("light", "0");
                     dataMap.put("light_status", "");
+                    dataMap.put("light_need", 0);
+                    dataMap.put("light_feed", 0);
                     dataMap.put("temperature", 0);
                     dataMap.put("humidity", 0);
                     dataMap.put("nameOfPlant", "");
@@ -84,6 +88,7 @@ public class Account extends AppCompatActivity{
                     dataMap.put("time of plant", "");
                     dataMap.put("plant id", "");
                     dataMap.put("auto valve", "0");
+                    dataMap.put("phase", "");
                     dataMap.put("setting_humidity", "0");
                     dataMap.put("setting_light", "0");
                     dataMap.put("setting_phase", "0");

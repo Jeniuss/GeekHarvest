@@ -34,20 +34,17 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class NotiPhase extends BroadcastReceiver {
 
-    private DatabaseReference mDatabase, plantDB, emailDB;
+    private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private ImageView sun, water, humidity;
-    private int num, month1, mLength1,month2, mLength2,fd,fy,countDate, mCount, numPhase, check; //เลขของ id ใน php ว่าเราเอาค่ามาเพื่อดึงให้ตรงกับพืชที่เราต้องการเทียบ phase ของมัน
+    private int num, month1, mLength1,month2, mLength2,fd,fy,countDate, mCount; //เลขของ id ใน php ว่าเราเอาค่ามาเพื่อดึงให้ตรงกับพืชที่เราต้องการเทียบ phase ของมัน
     private String[] phase;
-    private String plantID, dateOfPlant, currentDateString, text, valve;
+    private String plantID, dateOfPlant, currentDateString, text, text1;
     private String response = null;
     private String m[] = new String[2];
     private String d[] = new String[2];
     private String y[] = new String[2];
     private String word1[], word2[] = new String[3];
-    private String soil_status;
-    public boolean checkrun = true;
+
 
     @Override
     public void onReceive(final Context context, Intent intent){
@@ -58,53 +55,7 @@ public class NotiPhase extends BroadcastReceiver {
         mDatabase = FirebaseDatabase.getInstance().getReference().child(uid);
 
         currentDateString = DateFormat.getDateInstance().format(new Date());
-        getNum(context);
-        dateFromFirebase();
 
-
-    }
-
-    public void comparePhase(final Context context){
-        if(numPhase == 1){
-            text = "Sprouting";
-        }else if(numPhase == 2){
-            text = "Growing";
-        }else if(numPhase == 3){
-            text = "Harvest";
-        }else if(numPhase == 4) {
-            text = "Complete";
-        }else{
-            text = "In Process";
-        }
-
-        System.out.println("here1 " + numPhase);
-        System.out.println("here2 " + check);
-        if( check != numPhase) {
-            System.out.println("jee " + text);
-            System.out.println("here3 " + numPhase);
-
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Log.d("Test", "here");
-
-            android.app.Notification notification =
-                    new NotificationCompat.Builder(context) // this is context
-                            .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle("Advice!!!")
-                            .setContentText(text)
-                            .setAutoCancel(true)
-                            .build();
-
-            notificationManager.notify(10, notification);
-            System.out.println("here4 " + check);
-            check = numPhase;
-            System.out.println("here5 " + check);
-        } else {
-
-        }
-        System.out.println("here6" + numPhase);
-    }
-    public void getNum(final Context context){
         mDatabase.child("plant id").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,17 +63,7 @@ public class NotiPhase extends BroadcastReceiver {
                 num = Integer.parseInt(plantID);
                 Log.d("Num ", num+"");
                 dateFromDB();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() { //firebaseทำงานแบบ a asynchronous
-                    @Override
-                    public void run() {
-                        spiltDate();
-                        define();
-                        compareDate();
-                        noti();
-                        comparePhase(context);
-                    }
-                }, 500);
+                dateFromFirebase(context);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -132,7 +73,8 @@ public class NotiPhase extends BroadcastReceiver {
 
     }
 
-    public void dateFromFirebase(){
+
+    public void dateFromFirebase(final Context context){
         mDatabase.child("date of plant").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +88,35 @@ public class NotiPhase extends BroadcastReceiver {
                         define();
                         compareDate();
                         noti();
+                        mDatabase.child("phase").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                text1 = dataSnapshot.getValue().toString();
+                                if(!(text.equals(text1))) {
+                                    NotificationManager notificationManager =
+                                            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                    Log.d("Test", "here");
+                                    System.out.println("text1 111 " + text1);
 
+                                    android.app.Notification notification =
+                                            new NotificationCompat.Builder(context) // this is context
+                                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                                    .setContentTitle("Advice!!!")
+                                                    .setContentText(text)
+                                                    .setAutoCancel(true)
+                                                    .build();
+
+                                    notificationManager.notify(101, notification);
+                                    text1 = text;
+                                    mDatabase.child("phase").setValue(text);
+                                    System.out.println("text1 222 " + text1);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 }, 500);
 
@@ -157,8 +127,25 @@ public class NotiPhase extends BroadcastReceiver {
 
             }
         });
+    }
 
-
+    public void noti(){
+        if(fd == Integer.parseInt(phase[0])){
+            text = "Sprouting";
+            mDatabase.child("phase").setValue(text);
+        }else if(fd == Integer.parseInt(phase[1])){
+            text = "Growing";
+            mDatabase.child("phase").setValue(text);
+        }else if(fd == Integer.parseInt(phase[2])){
+            text = "Harvest";
+            mDatabase.child("phase").setValue(text);
+        }else if(fd > Integer.parseInt(phase[2])){
+            text = "Complete";
+            mDatabase.child("phase").setValue(text);
+        }else {
+            text = "In Process";
+            mDatabase.child("phase").setValue(text);
+        }
     }
 
     public void dateFromDB(){
@@ -178,7 +165,6 @@ public class NotiPhase extends BroadcastReceiver {
             e.printStackTrace();
         }
         spiteWord(response);
-        Log.d("Phase", phase[0]);
     }
 
     public class getHttp {
@@ -197,35 +183,6 @@ public class NotiPhase extends BroadcastReceiver {
         phase = response.split(" ");
         for(int i = 0; i < phase.length; i++){
             System.out.println(phase[i]);
-        }
-    }
-
-    public void noti(){
-        if(fd == Integer.parseInt(phase[0])){
-            text = "Sprouting";
-            System.out.println(text);
-            numPhase = 1;
-            System.out.println(numPhase);
-        }else if(fd == Integer.parseInt(phase[1])){
-            text = "Growing";
-            System.out.println(text);
-            numPhase = 2;
-            System.out.println(numPhase);
-        }else if(fd == Integer.parseInt(phase[2])){
-            text = "Harvest";
-            System.out.println(text);
-            numPhase = 3;
-            System.out.println(numPhase);
-        }else if(fd > Integer.parseInt(phase[2])){
-            text = "Complete";
-            System.out.println(text);
-            numPhase = 4;
-            System.out.println(numPhase);
-        }else {
-            text = "In Process";
-            System.out.println(text);
-            numPhase = 5;
-            System.out.println(numPhase);
         }
     }
 
