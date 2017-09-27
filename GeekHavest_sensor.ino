@@ -10,9 +10,10 @@
 #include <time.h> // get time api from c library
 #include <Arduino.h>
 
+
 // Config wifi network
-#define WIFI_SSID "HONG"
-#define WIFI_PASSWORD "0816122165"
+#define WIFI_SSID "Jeniuss"
+#define WIFI_PASSWORD "Jeniuss26"
 
 // Config firebase
 #define FIREBASE_HOST "geekharvest-b3a81.firebaseio.com"
@@ -21,28 +22,40 @@
 
 const String deviceNumber = "ELnD58NxBTUkwxzqdhTu1Fm0dHs1";
 const String deviceName = "Jee's Farm";
-// Config time
 
-int delayCount = 0; // delayCount to push static data
-int soilPin = A0;  // sensor YL69
-int soilValue = 0;
-int ldr_pin = A0;
-float ldr_value = 0.0;
-String light_status;
-float soil = 0.0;
-String soil_status = "normal";
-int time1,realTime,tempTime,suggest,day,cnt;
-int lightTimeStatus[24];
-boolean check = false;
+// Config pin
 DHT dht;
-
-//test
 const int valve_pin = D6;//relay solenoid valve
 const int light_pin = D5;//relay light
+ 
+//soil
+int soilPin = A0;  // sensor YL69
+int soilValue; //no of soil value
+float soil;
+String soil_status;
 
+//light + LDR
+String light_status;
+int ldr_pin = A0;
+float ldr_value;
 
-//define pin
-//#define valve_pin D6
+//autolight
+int light_need = 0;
+int light_feed = 0;
+int out_range = 12;
+int active = 1;
+int light_state = -1;
+int at_min = -1;
+
+//time
+int current_hour = 0;
+int current_min = 0;
+int current_sec = 0;
+int day = 0;
+
+//dht
+float humidity, temperature;
+
 
 void setup() {
   Serial.begin(115200);
@@ -66,188 +79,149 @@ void setup() {
   Serial.println();
   Serial.print("Connected to: ");
   Serial.println(WiFi.localIP());
+  
 
   Serial.println();
 
   // Initial connecting to firebase
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
   Serial.println("Connected to firebase!!");
+  Firebase.setInt(deviceNumber + "/active", active);
 }
 
 void loop() {
   Serial.println("Start reading sensor...");
-//  realTime = Firebase.getInt(deviceNumber + "/realTime");
-  getTime();
+  dhtSensor();
   ldrLight();
-  cntLight();
   light();
   setStaticData();
-  dhtSensor();
   valve();
   autoValve();
-
+  set_current_time();
+  Serial.println(String("") + current_hour + ":" + current_min + ":" + current_sec);
+  autoLight();
+  //test();
   delay(1000);
 }
 
-void getTime() {
-  WiFiClient client;
-  while (!!!client.connect("google.com", 80)) {
-    Serial.println("connection failed, retrying...");
-  }
+void test(){
+  // PUSH DATA
+  day = day+1;
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject& valueObject = jsonBuffer.createObject();
+  valueObject["day"] = String(day);
+  valueObject["light_feed"] = String(light_feed);
+  Firebase.push(deviceNumber + "/value", valueObject);
+}
 
+void set_current_time(){
+  WiFiClient client;
+  while(!client.connect("google.com", 80)) {
+    Serial.println("Connection Failed");
+  }
+  
   client.print("HEAD / HTTP/1.1\r\n\r\n");
-  while(!!!client.available()) {
+  while(!client.available()) {
      yield();
   }
-
+  
   while(client.available()){
-    if (client.read() == '\n') {    
-      if (client.read() == 'D') {    
-        if (client.read() == 'a') {    
-          if (client.read() == 't') {    
-            if (client.read() == 'e') {    
-              if (client.read() == ':') {    
-                client.read();
-                String theDate = client.readStringUntil('\r');
-                String newTime = theDate.substring(17,19);
-                time1 = newTime.toInt();
-                client.stop();
-                switch(time1){
-                  case 0:
-                    realTime = 7;
-                    Serial.println(7);
-                  break;
-                  case 1:
-                    realTime = 8;
-                    Serial.println(8);
-                  break;
-                  case 2:
-                    realTime = 9;
-                    Serial.println(9);
-                  break;
-                  case 3:
-                    realTime = 10;
-                    Serial.println(10);
-                  break;
-                  case 4:
-                    realTime = 11;
-                    Serial.println(11);
-                  break;
-                  case 5:
-                    realTime = 12;
-                    Serial.println(12);
-                  break;
-                  case 6:
-                    realTime = 13;
-                    Serial.println(13);
-                  break;
-                  case 7:
-                    realTime = 14;
-                    Serial.println(14);
-                  break;
-                  case 8:
-                    realTime = 15;
-                    Serial.println(15);
-                  break;
-                  case 9:
-                    realTime = 16;
-                    Serial.println(16);
-                  break;
-                  case 10:
-                    realTime = 17;
-                    Serial.println(17);
-                  break;
-                  case 11:
-                    realTime = 18;
-                    Serial.println(18);
-                  break;
-                  case 12:
-                    realTime = 19;
-                    Serial.println(19);
-                  break;
-                  case 13:
-                    realTime = 20;
-                    Serial.println(20);
-                  break;
-                  case 14:
-                    realTime = 21;
-                    Serial.println(21);
-                  break;
-                  case 15:
-                    realTime = 22;
-                    Serial.println(22);
-                  break;
-                  case 16:
-                    realTime = 23;
-                    Serial.println(23);
-                  break;
-                  case 17:
-                    realTime = 0;
-                    Serial.println(0);
-                  break;
-                  case 18:
-                    realTime = 1;
-                    Serial.println(1);
-                  break;
-                  case 19:
-                    realTime = 2;
-                    Serial.println(2);
-                  break;
-                  case 20:
-                    realTime = 3;
-                    Serial.println(3);
-                  break;
-                  case 21:
-                    realTime = 4;
-                    Serial.println(4);
-                  break;
-                  case 22:
-                    realTime = 5;
-                    Serial.println(5);
-                  break;
-                  case 23:
-                    realTime = 6;
-                    Serial.println(6);
-                  break;
-                }
-                Firebase.setInt(deviceNumber + "/realTime", realTime);
-              }
-            }
-          }
-        }
+    if (client.read() == '\n' && client.read() == 'D' && client.read() == 'a' && client.read() == 't' && client.read() == 'e' && client.read() == ':') {    
+      client.read();
+      String current_time = client.readStringUntil('\r');
+      current_hour = (current_time.substring(17,19).toInt()) + 7;
+      if(current_hour > 23) current_hour -= 24;
+      current_min = current_time.substring(20,22).toInt();
+      current_sec = current_time.substring(23,25).toInt();
+      client.stop();
+    }
+  }
+}
+
+
+void autoLight(){
+  light_need = Firebase.getInt(deviceNumber + "/light_need");
+  Firebase.setInt(deviceNumber + "/_time", current_hour);
+  if(current_min != at_min){
+    at_min = current_min;
+
+    // COLLECT PHASE
+    if(isLightStatus()){
+      light_feed ++;
+      Firebase.setInt(deviceNumber + "/light_feed", light_feed);
+    }
+
+    // USER INTERUPT PHASE
+    if(light_state != -1){
+      if((light_state == 0 && isLight()) || (light_state == 1 && !isLight())){
+        active = 0;
+        Firebase.setInt(deviceNumber + "/active", active);
+      }
+    }
+    
+    // RESET AT 6:00 AM
+    if(current_hour == 6 && at_min == 0){
+      reset();
+    }
+
+    // MORNING PHASE
+    if(light_need > out_range && current_hour >= 6 && current_hour <= (17 - (light_need - out_range))){
+      light_state = -1;
+      Firebase.setInt(deviceNumber + "/light_state", light_state);
+    } else if(light_need <= out_range && current_hour >= 6 && current_hour <= 17){
+      light_state = -1;
+      Firebase.setInt(deviceNumber + "/light_state", light_state);
+    // EVERNING PHASE
+    } else if (active == 1) {
+      if(light_feed < (light_need * 60)){
+        light_state = 1;
+        Firebase.setInt(deviceNumber + "/light_state", light_state);
+        Firebase.setString(deviceNumber + "/light", "1");
+      } else {
+        light_state = 0;
+        Firebase.setInt(deviceNumber + "/light_state", light_state);
+        Firebase.setString(deviceNumber + "/light", "0");
       }
     }
   }
+  
 }
 
-void cntLight(){
-  String light = Firebase.getString(deviceNumber + "/light_status");
-  if(realTime > tempTime && realTime >= 6 && realTime <= 18){
-     if(light.equals("light")){
-       cnt++;
-       Firebase.setInt(deviceNumber + "/cntTimeOpenLight", cnt);
-       Serial.println("I'm here1");
-       Serial.println(tempTime);
-     }
-     tempTime = realTime;
-     Serial.println("I'm here2");
-     Serial.println(tempTime);
-     check = true;
-    }else if(realTime == 19 && check == true){  
-     suggest = 16 - cnt;
-     day = day+1;
-     StaticJsonBuffer<200> jsonBuffer;
-     JsonObject& valueObject = jsonBuffer.createObject();
-     valueObject["cntLight"] = cnt;
-     valueObject["suggest"] = suggest;
-     Firebase.push(deviceNumber + "/Day"+day, valueObject);
-     check = false;
-     cnt = 0;
-     Firebase.setInt(deviceNumber + "/cntTimeOpenLight", 0);
-     tempTime = 0;
-    }
+boolean isLight(){
+  String light = Firebase.getString(deviceNumber + "/light");
+  if(light.equals("1")){
+    return true;
+  }else{
+    return false;
+  }
+  
 }
 
+boolean isLightStatus(){
+  String light_status = Firebase.getString(deviceNumber + "/light_status");
+  if(light_status.equals("light")){
+    return true;
+  }else{
+    return false;
+  }
+  
+}
+
+void reset(){
+  // PUSH DATA
+  day = day+1;
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject& valueObject = jsonBuffer.createObject();
+  valueObject["day"] = String(day);
+  valueObject["lightfeedperday"] = String(light_feed);
+  Firebase.push(deviceNumber + "/value", valueObject);
+
+  // RESET VARIABLES
+  light_feed = 0;
+  Firebase.setInt(deviceNumber + "/light_feed", light_feed);
+  active = 1;
+  Firebase.setInt(deviceNumber + "/active", active);
+}
 
 
 void setStaticData() {
@@ -258,22 +232,16 @@ void setStaticData() {
   Serial.print("Moisture of Soil: ");
   Serial.print(soil);
   Serial.println("%");
-  if(soil < 20) {
-    Serial.println("Soil Humidity: Low");   
-    soil_status = "Low Humidity";  
-  } else if(soil >= 21 && soil <= 40) {
+  if(soil <= 40) {
     Serial.println("Soil Humidity: Low");
     soil_status = "Low Humidity";
   } else if(soil >= 41 && soil <= 70) {
     Serial.println("Soil moisture: Medium");
     soil_status = "Normal Humidity";
-  } else if(soil >= 71 && soil <= 80) {
+  } else if(soil >= 71) {
     Serial.println("Soil moisture: High");
     soil_status = "High Humidity";
-  } else if(soil >= 81) {
-    Serial.println("Soil moisture: High");
-    soil_status = "High Humidity";
-  }
+  } 
   
   Firebase.setFloat(deviceNumber + "/soil", soil);
   Firebase.setString(deviceNumber + "/soil_status", soil_status);
@@ -294,12 +262,11 @@ void valve()
   Serial.println(valve);
   if(valve == "1"){ //switch on
     digitalWrite(valve_pin, LOW);
-  }
+  }else
   if(valve == "0"||soil_status == "Normal Humidity" || soil_status == "High Humidity"){ //switch off
     Firebase.setString(deviceNumber + "/valve", "0");
     digitalWrite(valve_pin, HIGH);
   }
-
 }
 
 void autoValve() 
@@ -308,17 +275,17 @@ void autoValve()
   String soil_status = Firebase.getString(deviceNumber + "/soil_status");
   String auto_valve = Firebase.getString(deviceNumber + "/auto valve");
   if(auto_valve == "1"){
-    if(soil_status != "Low Humidity"){
-      Firebase.setString(deviceNumber + "/valve", "0");
-    }else{
+    if(soil_status == "Low Humidity"){
       Firebase.setString(deviceNumber + "/valve", "1");
+    }else{
+      Firebase.setString(deviceNumber + "/valve", "0");
     }
   }
 }
 
 void dhtSensor(){
-  float humidity = dht.getHumidity(); // ดึงค่าความชื้น
-  float temperature = dht.getTemperature() * 0.00001; // ดึงค่าอุณหภูมิ
+  humidity = dht.getHumidity(); // ดึงค่าความชื้น
+  temperature = (dht.getTemperature() * 0.00001) - 10; // ดึงค่าอุณหภูมิ
   if(isnan(humidity) || isnan(temperature)){
     Serial.println("Sensor disconnect");
   }else{
@@ -337,13 +304,10 @@ void dhtSensor(){
 
 void ldrLight(){
   ldr_value=analogRead(ldr_pin); 
-  if(ldr_value <= 300){
+  if(ldr_value <= 550){
     light_status = "dark";
-    Serial.println("dark"); 
-  }else if(ldr_value > 300 && ldr_value < 800){
-    light_status = "normal";
-    Serial.println("normal"); 
-  }else if(ldr_value >= 800 ){
+    Serial.println("dark");  
+  }else {
     light_status = "light";
     Serial.println("light"); 
   }
@@ -360,14 +324,10 @@ void light()
   Serial.print("Light : ");
   Serial.println(light);
   if(light == "1"){ //switch on
+    digitalWrite(light_pin, HIGH);
+  }else
+  if(light == "0"){ //switch off
     digitalWrite(light_pin, LOW);
   }
-  if(light == "0"||light_status == "normal" || light_status == "light"){ //switch off
-    Firebase.setString(deviceNumber + "/light", "0");
-    digitalWrite(light_pin, HIGH);
-  }
-
 }
-
-
 
