@@ -10,17 +10,16 @@
 #include <time.h> // get time api from c library
 #include <Arduino.h>
 
-
 // Config wifi network
-#define WIFI_SSID "Jeniuss"
-#define WIFI_PASSWORD "Jeniuss26"
+#define WIFI_SSID "HONG"
+#define WIFI_PASSWORD "0816122165"
 
 // Config firebase
 #define FIREBASE_HOST "geekharvest-b3a81.firebaseio.com"
 #define FIREBASE_AUTH "kJBCWxaKG2QtAYlffVwXaK018gYtDPXOmx6x6fTV"
 // Config device
 
-const String deviceNumber = "ELnD58NxBTUkwxzqdhTu1Fm0dHs1";
+const String deviceNumber = "8LYhcZ5WHmZYdTNg4aG2KZEGFDx1";
 const String deviceName = "Jee's Farm";
 
 // Config pin
@@ -43,7 +42,7 @@ float ldr_value;
 int light_need = 0;
 int light_feed = 0;
 int out_range = 12;
-int active = 1;
+boolean active = true;
 int light_state = -1;
 int at_min = -1;
 
@@ -79,22 +78,20 @@ void setup() {
   Serial.println();
   Serial.print("Connected to: ");
   Serial.println(WiFi.localIP());
-  
 
   Serial.println();
 
   // Initial connecting to firebase
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
   Serial.println("Connected to firebase!!");
-  Firebase.setInt(deviceNumber + "/active", active);
 }
 
 void loop() {
   Serial.println("Start reading sensor...");
   dhtSensor();
+  setStaticData();
   ldrLight();
   light();
-  setStaticData();
   valve();
   autoValve();
   set_current_time();
@@ -141,12 +138,13 @@ void set_current_time(){
 
 void autoLight(){
   light_need = Firebase.getInt(deviceNumber + "/light_need");
+  light_feed = Firebase.getInt(deviceNumber + "/light_feed");
   Firebase.setInt(deviceNumber + "/_time", current_hour);
   if(current_min != at_min){
     at_min = current_min;
 
     // COLLECT PHASE
-    if(isLightStatus()){
+    if(isLight()){
       light_feed ++;
       Firebase.setInt(deviceNumber + "/light_feed", light_feed);
     }
@@ -154,8 +152,7 @@ void autoLight(){
     // USER INTERUPT PHASE
     if(light_state != -1){
       if((light_state == 0 && isLight()) || (light_state == 1 && !isLight())){
-        active = 0;
-        Firebase.setInt(deviceNumber + "/active", active);
+        active = false;
       }
     }
     
@@ -165,14 +162,14 @@ void autoLight(){
     }
 
     // MORNING PHASE
-    if(light_need > out_range && current_hour >= 6 && current_hour <= (17 - (light_need - out_range))){
+    if(light_need > out_range && current_hour <= (17 - (light_need - out_range))){
       light_state = -1;
       Firebase.setInt(deviceNumber + "/light_state", light_state);
-    } else if(light_need <= out_range && current_hour >= 6 && current_hour <= 17){
+    } else if(light_need <= out_range && current_hour <= 17){
       light_state = -1;
       Firebase.setInt(deviceNumber + "/light_state", light_state);
     // EVERNING PHASE
-    } else if (active == 1) {
+    } else if (active) {
       if(light_feed < (light_need * 60)){
         light_state = 1;
         Firebase.setInt(deviceNumber + "/light_state", light_state);
@@ -188,39 +185,29 @@ void autoLight(){
 }
 
 boolean isLight(){
-  String light = Firebase.getString(deviceNumber + "/light");
-  if(light.equals("1")){
-    return true;
-  }else{
-    return false;
-  }
-  
-}
-
-boolean isLightStatus(){
   String light_status = Firebase.getString(deviceNumber + "/light_status");
+//  String light_status = Firebase.getString(deviceNumber + "/light_status");
   if(light_status.equals("light")){
     return true;
   }else{
     return false;
   }
-  
 }
 
 void reset(){
   // PUSH DATA
-  day = day+1;
+  //day = day+1;
+  day = Firebase.getInt(deviceNumber + "/day");
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject& valueObject = jsonBuffer.createObject();
   valueObject["day"] = String(day);
-  valueObject["lightfeedperday"] = String(light_feed);
+  valueObject["light_feed"] = String(light_feed);
   Firebase.push(deviceNumber + "/value", valueObject);
 
   // RESET VARIABLES
   light_feed = 0;
   Firebase.setInt(deviceNumber + "/light_feed", light_feed);
-  active = 1;
-  Firebase.setInt(deviceNumber + "/active", active);
+  active = true;
 }
 
 
@@ -285,7 +272,7 @@ void autoValve()
 
 void dhtSensor(){
   humidity = dht.getHumidity(); // ดึงค่าความชื้น
-  temperature = (dht.getTemperature() * 0.00001) - 10; // ดึงค่าอุณหภูมิ
+  temperature = dht.getTemperature() * 0.00001; // ดึงค่าอุณหภูมิ
   if(isnan(humidity) || isnan(temperature)){
     Serial.println("Sensor disconnect");
   }else{
@@ -304,10 +291,10 @@ void dhtSensor(){
 
 void ldrLight(){
   ldr_value=analogRead(ldr_pin); 
-  if(ldr_value <= 550){
+  if(ldr_value <= 300){
     light_status = "dark";
-    Serial.println("dark");  
-  }else {
+    Serial.println("dark"); 
+  }else if(ldr_value > 300 ){
     light_status = "light";
     Serial.println("light"); 
   }
@@ -315,7 +302,7 @@ void ldrLight(){
   Serial.println(ldr_value); 
   
   Firebase.setString(deviceNumber + "/light_status", light_status);
-//  Firebase.setFloat(deviceNumber + "/light", ldr_value);
+
 }
 
 void light()
